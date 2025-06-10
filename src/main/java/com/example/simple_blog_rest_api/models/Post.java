@@ -1,5 +1,6 @@
 package com.example.simple_blog_rest_api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,6 +11,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "userid")
+    @JsonIgnore
     private User user;
 
     private String title;
@@ -35,6 +37,10 @@ public class Post {
 
     public String getContent() {
         return content;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setContent(String content) {
