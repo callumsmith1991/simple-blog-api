@@ -1,8 +1,7 @@
 package com.example.simple_blog_rest_api.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 @Entity
 public class User {
@@ -16,6 +15,25 @@ public class User {
 
     private String email;
 
+    private String password;
+
+    @OneToOne
+    @JoinColumn(name = "roleid")
+    @JsonIgnore
+    private UserRoles userRole;
+
+    public UserRoles getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRoles userRole) {
+        this.userRole = userRole;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getFirstname() {
         return firstname;
     }
@@ -26,6 +44,10 @@ public class User {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setLastname(String lastname) {

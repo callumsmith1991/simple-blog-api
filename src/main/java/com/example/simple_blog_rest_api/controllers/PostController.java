@@ -20,7 +20,7 @@ import javax.swing.text.html.Option;
 import java.util.Map;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping(path="/api/posts")
 public class PostController extends MainController {
 
@@ -54,8 +54,7 @@ public class PostController extends MainController {
     {
         try {
             User userFound = userRepository.findById(userid).orElseThrow(() -> new UserNotFoundException("User with id " + userid + " not found"));
-            return this.response(this.repo.findAllByUser(userFound), HttpStatus.FOUND);
-
+            return this.response(this.repo.findAllByUser(userFound), HttpStatus.OK);
         } catch (UserNotFoundException e) {
             return this.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

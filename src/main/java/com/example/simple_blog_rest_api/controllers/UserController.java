@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import static org.hibernate.validator.internal.util.Contracts.assertTrue;
 
 @Controller
 @RequestMapping(path="/api/users")
@@ -50,6 +53,10 @@ public class UserController extends MainController {
             user.setLastname(request.getLastname());
             user.setEmail(request.getEmail());
 
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+            String password = encoder.encode("test");
+
+            user.setPassword(password);
             User savedUser = this.repo.save(user);
             return this.response(savedUser, HttpStatus.CREATED);
         } catch (Exception e) {
