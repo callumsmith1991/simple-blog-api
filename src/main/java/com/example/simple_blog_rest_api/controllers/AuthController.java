@@ -1,6 +1,6 @@
 package com.example.simple_blog_rest_api.controllers;
 
-import com.example.simple_blog_rest_api.config.Jwt;
+import com.example.simple_blog_rest_api.config.auth.JwtUtil;
 import com.example.simple_blog_rest_api.config.services.AuthService;
 import com.example.simple_blog_rest_api.requests.LoginRequest;
 import jakarta.validation.Valid;
@@ -25,7 +25,7 @@ public class AuthController extends MainController {
     AuthService authService;
 
     @Autowired
-    Jwt jwt;
+    JwtUtil jwtUtil;
 
     @PostMapping(path = "/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request, BindingResult result)
@@ -33,7 +33,7 @@ public class AuthController extends MainController {
         if(authService.authenticate(request.getEmail(), request.getPassword())) {
 
             Map<String,String> messages = new HashMap<>();
-            messages.put("token", jwt.generateToken(request.getEmail()));
+            messages.put("token", jwtUtil.generateToken(request.getEmail()));
             messages.put("success", "Login Success");
 
             return this.response(messages, HttpStatus.OK);
