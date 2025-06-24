@@ -29,7 +29,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException, java.io.IOException {
         try {
-            String jwt = parseJwt(request);
+            String jwt = this.parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String email = jwtUtils.getEmailFromToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByEmail(email);
@@ -47,7 +47,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-    private String parseJwt(HttpServletRequest request) {
+    public String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
         if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
             return headerAuth.substring(7);

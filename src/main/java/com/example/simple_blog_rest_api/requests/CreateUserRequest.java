@@ -15,8 +15,14 @@ public class CreateUserRequest {
     @Email(message = "Email should be valid")
     private String email;
 
+    private Integer roleId;
+
     public String getFirstname() {
         return firstname;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
     }
 
     public String getLastname() {

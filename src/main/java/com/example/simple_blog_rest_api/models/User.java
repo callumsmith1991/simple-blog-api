@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class User {
     @Id
     @GeneratedValue()
-    private Integer userid;
+    private Integer id;
 
     private String firstname;
 
@@ -17,7 +17,7 @@ public class User {
 
     private String password;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "roleid")
     @JsonIgnore
     private UserRoles userRole;

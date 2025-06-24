@@ -1,7 +1,9 @@
 package com.example.simple_blog_rest_api.controllers;
 
 import com.example.simple_blog_rest_api.models.User;
+import com.example.simple_blog_rest_api.models.UserRoles;
 import com.example.simple_blog_rest_api.repositorys.UserRepository;
+import com.example.simple_blog_rest_api.repositorys.UserRolesRepository;
 import com.example.simple_blog_rest_api.requests.CreateUserRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class UserController extends MainController {
     @Autowired
     public UserRepository repo;
 
+    @Autowired
+    public UserRolesRepository userRolesRepository;
+
     @GetMapping("/{userid}")
     public ResponseEntity<?> get(@PathVariable Integer userid)
     {
@@ -32,7 +37,7 @@ public class UserController extends MainController {
         return this.response(user, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/admin/create")
     public ResponseEntity<?> create(@Valid @RequestBody CreateUserRequest request, BindingResult result) {
 
         try {
@@ -53,6 +58,13 @@ public class UserController extends MainController {
             user.setLastname(request.getLastname());
             user.setEmail(request.getEmail());
 
+            UserRoles userRole = userRolesRepository.getById(request.getRoleId());
+
+            if(userRole == null) {
+                return this.response(Map.of("errors", "Role not found"), HttpStatus.BAD_REQUEST);
+            }
+
+            user.setUserRole(userRole);
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
             String password = encoder.encode("test");
 
