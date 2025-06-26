@@ -15,6 +15,12 @@ public class CreateUserRequest {
     @Email(message = "Email should be valid")
     private String email;
 
+    @NotBlank
+    private String password;
+
+    @NotBlank
+    private String confirmPassword;
+
     private Integer roleId;
 
     public String getFirstname() {
@@ -31,5 +37,21 @@ public class CreateUserRequest {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
